@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -51,8 +50,8 @@ model Note {
   Updated_At DateTime @updatedAt
 
   // FK + Relation
-  user       User     @relation(fields: [User_Id], references: [User_Id])
-  User_Id    Int
+  user    User @relation(fields: [User_Id], references: [User_Id])
+  User_Id Int
 }
 
 model Task {
@@ -65,7 +64,7 @@ model Task {
   Created_At   DateTime @default(now())
   Updated_At   DateTime @updatedAt
   Completed_At DateTime
-  
-  user User @relation(fields: [User_Id], references: [User_Id])
+
+  user    User @relation(fields: [User_Id], references: [User_Id])
   User_Id Int
 }
