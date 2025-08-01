@@ -43,7 +43,7 @@ CREATE TABLE "public"."Task" (
     "Due_Date" TIMESTAMP(3) NOT NULL,
     "Created_At" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Updated_At" TIMESTAMP(3) NOT NULL,
-    "Completed_At" TIMESTAMP(3) NOT NULL,
+    "Completed_At" TIMESTAMP(3),
     "User_Id" INTEGER NOT NULL,
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("Task_Id")

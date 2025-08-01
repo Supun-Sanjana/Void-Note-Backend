@@ -63,7 +63,7 @@ model Task {
   Due_Date     DateTime
   Created_At   DateTime @default(now())
   Updated_At   DateTime @updatedAt
-  Completed_At DateTime
+  Completed_At DateTime?
 
   user    User @relation(fields: [User_Id], references: [User_Id])
   User_Id Int
