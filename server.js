@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv'
 import userRouter from './src/Router/UserRouter.js';
+import noteRouter from './src/Router/NoteRouter.js';
 
 dotenv.config()
 
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/note', noteRouter);
 
 // Root
 app.get('/', (req, res) => {

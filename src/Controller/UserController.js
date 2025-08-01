@@ -31,7 +31,7 @@ export const userRegister = async (req, res) => {
         }
 
         // Check for existing user
-        const existingUser = await DB.user.findFirst({
+        const existingUser = await DB.User.findFirst({
             where: {
                 OR: [
                     { Username: username },
@@ -51,7 +51,7 @@ export const userRegister = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Create new user
-        const newUser = await DB.user.create({
+        const newUser = await DB.User.create({
             data: {
                 First_Name: first_Name,
                 Last_Name: last_Name,
@@ -123,3 +123,4 @@ export const userLogin = async (req, res) => {
         res.status(500).json({ 'message': "try againg ", error: e })
     }
 }
+
