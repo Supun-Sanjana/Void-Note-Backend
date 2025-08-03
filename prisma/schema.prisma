@@ -32,8 +32,8 @@ model User {
   Username        String   @unique
   Email           String   @unique
   Password        String
-  Profile_Pic_Url String
-  Is_Active       Boolean
+  Profile_Pic_Url String?
+  Is_Active       Boolean?
   Created_At      DateTime @default(now())
   Updated_At      DateTime @updatedAt
   Last_Login      DateTime @default(now())

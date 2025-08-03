@@ -10,9 +10,8 @@ export const userRegister = async (req, res) => {
       last_name,
       username,
       email,
-      password,
-      pofile_pic_url,
-      is_active,
+      password
+      
     } = req.body;
 
     // Validate required fields
@@ -21,9 +20,8 @@ export const userRegister = async (req, res) => {
       !last_name ||
       !username ||
       !email ||
-      !password ||
-      !pofile_pic_url ||
-      is_active === undefined // allow false too
+      !password 
+       
     ) {
       return res.status(400).json({
         message: "Some fields are missing...",
@@ -55,9 +53,8 @@ export const userRegister = async (req, res) => {
         Username: username,
         Email: email,
         Password: hashedPassword,
-        Profile_Pic_Url: pofile_pic_url,
-        Is_Active: is_active,
-        // Created_At and Last_Login will auto-generate
+       
+       
       },
     });
 
@@ -69,6 +66,7 @@ export const userRegister = async (req, res) => {
         email: newUser.Email,
       },
     });
+    console.log("Received body:", req.body);
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -111,7 +109,10 @@ export const userLogin = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.status(200).json({ message: "Success", token });
+    console.log("Received body:", req.body);
+
+   return res.status(200).json({ message: "Success", token });
+
   } catch (e) {
     res.status(500).json({ message: "try againg ", error: e });
   }
