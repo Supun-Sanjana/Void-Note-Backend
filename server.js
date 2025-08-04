@@ -4,6 +4,7 @@ import userRouter from './src/Router/UserRouter.js';
 import noteRouter from './src/Router/NoteRouter.js';
 import taskRouter from './src/Router/TaskRouter.js';
 import cors from 'cors';
+import { AuthMiddleware } from './src/Middleware/AuthMiddleware.js';
 
 
 
@@ -17,6 +18,7 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 
 // Routes
+app.use(AuthMiddleware);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/note', noteRouter);
 app.use('/api/v1/task', taskRouter);

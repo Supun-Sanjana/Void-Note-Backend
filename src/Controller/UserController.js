@@ -66,7 +66,7 @@ export const userRegister = async (req, res) => {
         email: newUser.Email,
       },
     });
-    console.log("Received body:", req.body);
+    console.log("Received body:", req.body );
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -82,7 +82,7 @@ export const userLogin = async (req, res) => {
       });
     }
 
-    const user = await DB.user.findFirst({
+    const user = await DB.User.findFirst({
       where: { Username: username },
     });
     if (!user) {
@@ -90,6 +90,8 @@ export const userLogin = async (req, res) => {
         message: "User Not Found !",
       });
     }
+
+
 
     const is_match = await bcrypt.compare(password, user.Password);
 
@@ -109,7 +111,7 @@ export const userLogin = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    console.log("Received body:", req.body);
+    console.log("Received body:", req.body, token);
 
    return res.status(200).json({ message: "Success", token });
 
@@ -139,20 +141,25 @@ export const userUpdate = async (req, res) => {
       is_active,
     } = req.body;
 
-    const updatedUser = await DB.User.update({
-      where: {
-        User_Id: userId,
-      },
-      data: {
-        ...(first_name && { First_Name: first_name }),
-        ...(last_name && { Last_Name: last_name }),
-        ...(username && { Username: username }),
-        ...(email && { Email: email }),
-        ...(password && { Password: password }),
-        ...(profile_pic_url && { Profile_Pic_Url: profile_pic_url }),
-        ...(is_active !== undefined && { Is_Active: is_active }),
-      },
-    });
+    let updateData = {
+  ...(first_name && { First_Name: first_name }),
+  ...(last_name && { Last_Name: last_name }),
+  ...(username && { Username: username }),
+  ...(email && { Email: email }),
+  ...(profile_pic_url && { Profile_Pic_Url: profile_pic_url }),
+  ...(is_active !== undefined && { Is_Active: is_active }),
+};
+
+if (password) {
+  const salt = await bcrypt.genSalt(10);
+  updateData.Password = await bcrypt.hash(password, salt);
+}
+
+const updatedUser = await DB.User.update({
+  where: { User_Id: userId },
+  data: updateData,
+});
+
 
     return res.status(200).json({
       message: "User updated successfully",
@@ -178,7 +185,7 @@ export const deleteUser = async (req, res) => {
       },
     });
 
-    res.status(204).json({ message: "User deleted" });
+    res.status(204);
   } catch (e) {
     res.status(500).json({ message: "Server error", error: e.message });
   }
