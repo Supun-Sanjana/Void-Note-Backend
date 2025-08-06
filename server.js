@@ -4,12 +4,8 @@ import userRouter from './src/Router/UserRouter.js';
 import noteRouter from './src/Router/NoteRouter.js';
 import taskRouter from './src/Router/TaskRouter.js';
 import cors from 'cors';
-import { AuthMiddleware } from './src/Middleware/AuthMiddleware.js';
 
-
-
-
-dotenv.config()
+dotenv.config();
 
 const app = express();
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
@@ -18,13 +14,13 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 
 // Routes
-app.use(AuthMiddleware);
+
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/note', noteRouter);
-app.use('/api/v1/task', taskRouter);
+app.use('/api/v1/task', taskRouter);                  
 
 // Root
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.send('API is running...');
 });
 

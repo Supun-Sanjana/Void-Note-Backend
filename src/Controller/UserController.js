@@ -11,7 +11,7 @@ export const userRegister = async (req, res) => {
       username,
       email,
       password
-      
+
     } = req.body;
 
     // Validate required fields
@@ -20,8 +20,8 @@ export const userRegister = async (req, res) => {
       !last_name ||
       !username ||
       !email ||
-      !password 
-       
+      !password
+
     ) {
       return res.status(400).json({
         message: "Some fields are missing...",
@@ -53,8 +53,8 @@ export const userRegister = async (req, res) => {
         Username: username,
         Email: email,
         Password: hashedPassword,
-       
-       
+
+
       },
     });
 
@@ -66,7 +66,7 @@ export const userRegister = async (req, res) => {
         email: newUser.Email,
       },
     });
-    console.log("Received body:", req.body );
+    console.log("Received body:", req.body);
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -103,17 +103,17 @@ export const userLogin = async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: user.Id,
+        id: user.User_Id,
         user_name: user.Username,
       },
       process.env.JWT_SECRET ||
-        "wjb437nhgvbcgx2bjucbngjxh32bvhxjngvhdwj6nbxwvdx45562vghbxbfw45cfghxfcgsxs",
+      "wjb437nhgvbcgx2bjucbngjxh32bvhxjngvhdwj6nbxwvdx45562vghbxbfw45cfghxfcgsxs",
       { expiresIn: "24h" }
     );
 
     console.log("Received body:", req.body, token);
 
-   return res.status(200).json({ message: "Success", token });
+    return res.status(200).json({ message: "Success", token });
 
   } catch (e) {
     res.status(500).json({ message: "try againg ", error: e });
@@ -142,23 +142,23 @@ export const userUpdate = async (req, res) => {
     } = req.body;
 
     let updateData = {
-  ...(first_name && { First_Name: first_name }),
-  ...(last_name && { Last_Name: last_name }),
-  ...(username && { Username: username }),
-  ...(email && { Email: email }),
-  ...(profile_pic_url && { Profile_Pic_Url: profile_pic_url }),
-  ...(is_active !== undefined && { Is_Active: is_active }),
-};
+      ...(first_name && { First_Name: first_name }),
+      ...(last_name && { Last_Name: last_name }),
+      ...(username && { Username: username }),
+      ...(email && { Email: email }),
+      ...(profile_pic_url && { Profile_Pic_Url: profile_pic_url }),
+      ...(is_active !== undefined && { Is_Active: is_active }),
+    };
 
-if (password) {
-  const salt = await bcrypt.genSalt(10);
-  updateData.Password = await bcrypt.hash(password, salt);
-}
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.Password = await bcrypt.hash(password, salt);
+    }
 
-const updatedUser = await DB.User.update({
-  where: { User_Id: userId },
-  data: updateData,
-});
+    const updatedUser = await DB.User.update({
+      where: { User_Id: userId },
+      data: updateData,
+    });
 
 
     return res.status(200).json({
